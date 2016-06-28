@@ -1,0 +1,20 @@
+{
+  "name": "nodehtml2pdf",
+  "version": "1.0.0",
+  "description": "Converts HTML document to pdf ",
+  "main": "pdf.js",
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4",
+    "html-pdf": "^1.5.0",
+    "uuid": "^2.0.2",
+    "winston": "^2.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
