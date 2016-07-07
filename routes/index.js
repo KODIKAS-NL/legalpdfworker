@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 
 
-router.post('*', (req, res) => {
+router.post('/convert', (req, res) => {
     //checking if content-type is text/html if not sends error message
     let contentType = req.get('Content-Type');
     if (contentType != 'text/html' && contentType.indexOf('multipart/form-data')) {
