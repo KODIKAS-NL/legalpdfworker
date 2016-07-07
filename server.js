@@ -1,8 +1,7 @@
 'use strict';
 const bodyParser = require('body-parser');
-const config = require('./config/proxy-configuration.json');
 const express = require('express');
-const log = require('winston');
+const log = require('./lib/logger');
 const routes = require('./routes');
 const fileUpload = require('./middleware/fileUpload');
 
@@ -19,8 +18,10 @@ app.use((req, res) => {
   res.send(404, 'Not found');
 });
 
+var port = process.env.PORT || 3000;
+
 //create server and set listening port
-const server = app.listen(config.Legal_Proxy_Converter_Listener_Port, () => {
+const server = app.listen(port, () => {
   log.info(`Legal Converter listening on port  ${ server.address().port}`);
 });
 

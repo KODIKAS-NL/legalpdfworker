@@ -3,6 +3,7 @@ const pdf = require('html-pdf');
 const Promise = require('bluebird');
 const uuid = require('uuid');
 const fileSystem = require('fs');
+const log = require('../lib/logger');
 const options = {
   'border': {
     'top': '1cm',
@@ -44,6 +45,7 @@ exports.convert = (data, documentPath, res) => {
 
   })
     .catch((error) => {
+      log.error('Unable to convert suplied document: ' + documentPath);
       res.status(415).end('Unable to convert the supplied document');
     });
 }

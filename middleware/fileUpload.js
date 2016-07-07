@@ -3,6 +3,7 @@ const express = require('express');
 const fs = require('fs');
 const Promise = require('bluebird');
 const multer = require('multer');
+const log = require('../lib/logger');
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
     cb(null, './tmp/')
@@ -24,6 +25,7 @@ router.use(upload.single('file'), function(req, res, next) {
     return new Promise((resolve, reject) => {
       fs.readFile(req.file.path, 'utf8', (err, data) => {
         if (err) {
+          log.error('Read file err: ', err);
           reject({
             error: err
           });
