@@ -22,7 +22,7 @@ var port = process.env.PORT || 3000;
 
 //create server and set listening port
 const server = app.listen(port, () => {
-  log.info(`Legal Converter listening on port  ${ server.address().port}`);
+  log.info(`Legal Converter listening on port ${server.address().port}`);
 });
 
 module.exports = app;
