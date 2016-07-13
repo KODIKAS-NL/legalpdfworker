@@ -1,7 +1,7 @@
 {
   "name": "nodehtml2pdf",
   "version": "1.0.0",
-  "description": "Converts HTML document to pdf ",
+  "description": "Converts HTML documents to pdf",
   "main": "pdf.js",
   "dependencies": {
     "bluebird": "^3.4.1",

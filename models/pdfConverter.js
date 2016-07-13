@@ -6,10 +6,10 @@ const fileSystem = require('fs');
 const log = require('../lib/logger');
 const options = {
   'border': {
-    'top': '1cm',
-    'right': '1cm',
-    'bottom': '1cm',
-    'left': '1cm'
+    'top': '2.5cm',
+    'right': '2.5cm',
+    'bottom': '2.5cm',
+    'left': '2.5cm'
   }
 };
 
