@@ -2,69 +2,71 @@
 const app = require('../../server');
 const request = require('supertest');
 const should = require('should');
+const mocha = require('mocha');
 
-describe('Tasks', () => {
-    describe('POST /service/html2pdf', () => {
+describe('Convert', function() {
+  describe('POST /convert', function() {
 
-        it('should return pdf document', (done) => {
-            request(app)
-                .post('/service/html2pdf')
-                .set({
-                    'Content-Type': 'text/html'
-                })
-                .send('<p>This bit of HTML will be transformed into a <b>docx or pdf</b> file</p>')
-                .expect(200)
-                .end((err, res) => {
+    it('should convert html payload and return pdf document', function(done) {
+      this.timeout(10000);
+      request(app)
+        .post('/convert')
+        .set({
+          'Content-Type': 'text/html'
+        })
+        .send('<p>This bit of HTML will be transformed into a <b>docx or pdf</b> file</p>')
+        .expect(200)
+        .end((err, res) => {
 
-                    if (err) {
-                        console.log(err);
-                    }
-                    res.should.be.not.null;
-                    res.header['content-disposition'].should.match(/.*\.pdf/)
-                    done();
-                });
+          if (err) {
+            err.should.be.null;
+            return console.log(err);
+          }
+          res.should.be.not.null;
+          res.header['content-disposition'].should.match(/.*\.pdf/)
+          done();
         });
-
-    });
-    describe('POST /service/file2pdf', () => {
-
-        it('should return pdf document', (done) => {
-            request(app)
-                .post('/service/file2pdf')
-                .set({
-                    'Content-Type': 'multipart/form-data'
-                })
-                .attach('file', 'example.html')
-                .expect(200)
-                .end((err, res) => {
-
-                    if (err) {
-                        console.log(err);
-                    }
-                    res.should.be.not.null;
-                    res.header['content-disposition'].should.match(/.*\.pdf/)
-
-                    done();
-                });
-        });
-
     });
 
-    describe('GET /service/pdfworker', () => {
+    it('should html file and return pdf document', function(done) {
+      this.timeout(10000);
+      request(app)
+        .post('/convert')
+        .set({
+          'Content-Type': 'multipart/form-data'
+        })
+        .attach('file', 'example.html')
+        .expect(200)
+        .end((err, res) => {
 
-        it('should return system info', (done) => {
-            request(app)
-                .get('/service/pdfworker')
-                .expect(200)
-                .end((err, res) => {
+          if (err) {
+            console.log(err);
+          }
 
-                    if (err) {
-                        console.log(err);
-                    }
-                    res.should.be.not.null;
-                    done();
-                });
+          res.header['content-disposition'].should.match(/.*\.pdf/)
+
+          done();
         });
-
     });
+  });
+
+  describe('GET /', () => {
+
+    it('should return service info', (done) => {
+      request(app)
+        .get('/')
+        .expect(200)
+        .end((err, res) => {
+
+          if (err) {
+            err.should.be.null;
+            return console.log(err);
+          }
+          const info = res.body;
+          info.should.be.an.Object;
+          info.should.have.property('description', 'Document to PDF conversion');
+          done();
+        });
+    });
+  });
 });
