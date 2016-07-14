@@ -10,6 +10,7 @@
     "express": "^4.13.4",
     "html-pdf": "^1.5.0",
     "multer": "^1.1.0",
+    "phantomjs": "^1.9.20",
     "uuid": "^2.0.2",
     "winston": "^2.2.0",
     "winston-rollbar": "^0.2.0"
