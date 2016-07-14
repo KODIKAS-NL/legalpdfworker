@@ -58,12 +58,14 @@ router.post('/embed', (req, res) => {
 
 });
 
-router.get('*', (req, res) => {
-    res.status(200).end(JSON.parse(JSON.stringify('{"name": "legalthings/pdfworker",' +
-        '"version": "0.1.0",' +
-        '"description": "Document to PDF conversion",' +
-        '"env": "prod.example",' +
-        '"url": "http://pdfworker.example"}')));
+router.get('/', (req, res) => {
+    return res.json({
+        name: "legalthings/pdfworker",
+        version: version,
+        description: "Document to PDF conversion",
+        env: "prod.example",
+        url: "http://pdfworker.example"
+    });
 });
 
 module.exports = router;
