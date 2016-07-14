@@ -4,11 +4,11 @@ const request = require('supertest');
 const should = require('should');
 
 describe('Tasks', () => {
-    describe('POST /service/html2pdf', () => {
+    describe('POST /convert', () => {
 
-        it('should return pdf document', (done) => {
+        it('should return pdf document(sending html code in body)', (done) => {
             request(app)
-                .post('/service/html2pdf')
+                .post('/convert')
                 .set({
                     'Content-Type': 'text/html'
                 })
@@ -26,11 +26,11 @@ describe('Tasks', () => {
         });
 
     });
-    describe('POST /service/file2pdf', () => {
+    describe('POST /convert', () => {
 
-        it('should return pdf document', (done) => {
+        it('should return pdf document(sending html file)', (done) => {
             request(app)
-                .post('/service/file2pdf')
+                .post('/convert')
                 .set({
                     'Content-Type': 'multipart/form-data'
                 })
@@ -50,11 +50,48 @@ describe('Tasks', () => {
 
     });
 
-    describe('GET /service/pdfworker', () => {
+    describe('POST /embed', () => {
+
+        it('should return pdf document', (done) => {
+            request(app)
+                .post('/embed')
+                .set({
+                    'Content-Type': 'multipart/form-data'
+                })
+                .attach('file', 'testexample.pdf')
+                .attach('file', 'testimage.jpg')
+                .field('insert[1][text]', 'Hello world')
+                .field('insert[1][page]', '1')
+                .field('insert[1][x]', '250')
+                .field('insert[1][y]', '320')
+                .field('insert[1][fontFamily]', '')
+                .field('insert[1][fontSize]', '20')
+                .field('insert[2][image]', 'some/path/testimage.jpg')
+                .field('insert[2][page]', '1')
+                .field('insert[2][x]', '600')
+                .field('insert[2][y]', '20')
+                .field('insert[2][width]', '150')
+                .field('insert[2][height]', '150')
+                .expect(200)
+                .end((err, res) => {
+
+                    if (err) {
+                        console.log(err);
+                    }
+                    res.should.be.not.null;
+                    res.header['content-disposition'].should.match(/.*\.pdf/)
+
+                    done();
+                });
+        });
+
+    });
+
+    describe('GET /', () => {
 
         it('should return system info', (done) => {
             request(app)
-                .get('/service/pdfworker')
+                .get('/')
                 .expect(200)
                 .end((err, res) => {
 

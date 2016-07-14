@@ -5,6 +5,7 @@ const express = require('express');
 const log = require('winston');
 const routes = require('./routes');
 const fileUpload = require('./middleware/fileUpload');
+const multiplefileUpload = require('./middleware/multipleFileUpload');
 
 log.add(log.transports.File, {
     filename: config.Legal_Proxy_Converter_Log_File_Name
@@ -16,7 +17,8 @@ const app = express();
 app.use(bodyParser.text({
     type: 'text/html'
 }));
-app.use(fileUpload);
+app.use('/convert',fileUpload);
+app.use('/embed',multiplefileUpload);
 
 //Routes
 app.use('/', routes);

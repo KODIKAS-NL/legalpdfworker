@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
         cb(null, './tmp/')
     },
     filename: function(req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now())
+        cb(null, file.originalname + '-' + Date.now())
     }
 })
 
@@ -18,8 +18,7 @@ const upload = multer({
 
 const router = express.Router();
 
-router.use(upload.single('file'), function(req, res, next) {
-
+router.use(upload.single('file'), (req, res, next) => {
     req.fileUpload = function() {
         return new Promise((resolve, reject) => {
             fs.readFile(req.file.path, 'utf8', (err, data) => {
@@ -30,7 +29,8 @@ router.use(upload.single('file'), function(req, res, next) {
                 } else {
                     resolve({
                         body: data,
-                        documentPath: req.file.path
+                        documentPath: req.file.path,
+                        insert: req.body.insert
                     });
                 }
             });
