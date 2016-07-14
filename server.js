@@ -4,13 +4,15 @@ const express = require('express');
 const log = require('./lib/logger');
 const routes = require('./routes');
 const fileUpload = require('./middleware/fileUpload');
+const multiplefileUpload = require('./middleware/multipleFileUpload');
 
 const app = express();
 
 app.use(bodyParser.text({
   type: 'text/html'
 }));
-app.use(fileUpload);
+app.use('/convert',fileUpload);
+app.use('/embed', multiplefileUpload);
 
 //Routes
 app.use('/', routes);
@@ -19,6 +21,7 @@ app.use((req, res) => {
 });
 
 var port = process.env.PORT || 3000;
+
 
 //create server and set listening port
 const server = app.listen(port, () => {
