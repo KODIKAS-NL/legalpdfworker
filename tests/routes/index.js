@@ -6,7 +6,8 @@ const should = require('should');
 describe('Tasks', () => {
     describe('POST /convert', () => {
 
-        it('should return pdf document(sending html code in body)', (done) => {
+        it('should return pdf document(sending html code in body)', function(done) {
+            this.timeout(10000);
             request(app)
                 .post('/convert')
                 .set({
@@ -28,7 +29,8 @@ describe('Tasks', () => {
     });
     describe('POST /convert', () => {
 
-        it('should return pdf document(sending html file)', (done) => {
+        it('should return pdf document(sending html file)', function(done) {
+            this.timeout(10000);
             request(app)
                 .post('/convert')
                 .set({

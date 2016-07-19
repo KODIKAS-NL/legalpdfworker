@@ -4,7 +4,8 @@ const express = require('express');
 const fileSystem = require('fs');
 const router = express.Router();
 const log = require('winston');
-
+const version = require('../package.json').version;
+const getEnv = require('../lib/get-env');
 
 router.post('/convert', (req, res) => {
     //checking if content-type is text/html if not sends error message
@@ -63,8 +64,7 @@ router.get('/', (req, res) => {
         name: "legalthings/pdfworker",
         version: version,
         description: "Document to PDF conversion",
-        env: "prod.example",
-        url: "http://pdfworker.example"
+        env: getEnv()
     });
 });
 
