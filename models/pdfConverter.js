@@ -53,8 +53,16 @@ exports.editPDF = (data, insert) => {
     return new Promise((resolve, reject) => {
         //searching for the pdf file
         let PDFFile = data.find((file) => {
-            return file.mimetype === 'application/pdf'
+            return file.fieldname === 'file'
         });
+        if (!PDFFile) {
+            data.forEach((file) => {
+                fileSystem.unlink(file.path);
+            });
+            return reject({
+                error: 'Unable to handle the supplied document(s)'
+            });
+        }
         //parsing the file to get information about it(page number, width and height of the page)
         let pdfReader = hummus.createReader(PDFFile.path);
 
@@ -118,8 +126,12 @@ exports.editPDF = (data, insert) => {
                     pdfWriter.end();
 
                 }
+                //geting the image file based on the name of the input file
+                let imageFile = data.find((file) => {
+                    return file.fieldname === 'insert[' + i + '][image]'
+                });
 
-                if (insert[i]['image'] != null && insert[i]['image'] != '') {
+                if (imageFile) {
                     let pdfWriter = hummus.createWriterToModify(PDFFile.path);
                     let mediabox = pdfReader.parsePage(insert[i]['page'] - 1).getMediaBox();
                     let pageWidth = mediabox[2];
@@ -136,10 +148,8 @@ exports.editPDF = (data, insert) => {
                     }
                     let pageModifier = new hummus.PDFPageModifier(pdfWriter, insert[i]['page'] - 1, true);
 
-                    //geting the image file based on the name of the original file and the path of the image that was sent
-                    let imageFile = data.find((file) => {
-                        return file.originalname === insert[i]['image'].substr(insert[i]['image'].lastIndexOf('/') + 1)
-                    });
+
+
 
                     //checking if coordinates are negative, if they are we recalculate them
                     if (insert[i]['x'] < 0) {
