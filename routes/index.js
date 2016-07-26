@@ -33,20 +33,20 @@ router.post('/embed', (req, res) => {
         return res.status(415).end('Unable to convert the supplied document');
     }
     req.multiplefileUpload().then((data) => {
-        converter.editPDF(data.files, data.insert).then((data)=>{
-          res.writeHead(200, {
-              'Content-Type': 'application/pdf',
-              'Access-Control-Allow-Origin': '*',
-              'Content-Disposition': 'attachment; filename="output.pdf"'
-          });
-          let readStream = fileSystem.createReadStream(data.PDFFile);
-          readStream.pipe(res);
-          //deleting the file once everything has been sent
-          readStream.on('close', () => {
-              data.files.forEach((file) => {
-                  fileSystem.unlink(file.path);
-              });
-          });
+        converter.editPDF(data.files, data.insert).then((data) => {
+            res.writeHead(200, {
+                'Content-Type': 'application/pdf',
+                'Access-Control-Allow-Origin': '*',
+                'Content-Disposition': 'attachment; filename="output.pdf"'
+            });
+            let readStream = fileSystem.createReadStream(data.PDFFile);
+            readStream.pipe(res);
+            //deleting the file once everything has been sent
+            readStream.on('close', () => {
+                data.files.forEach((file) => {
+                    fileSystem.unlink(file.path);
+                });
+            });
         }).catch((e) => {
             log.error(e);
             return res.status(415).end('Unable to convert the supplied document');

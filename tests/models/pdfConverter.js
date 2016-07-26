@@ -14,7 +14,7 @@ describe('pdfConverter', () => {
                 filename: 'example.pdf',
                 path: 'testexample.pdf',
             }, {
-                fieldname: 'file',
+                fieldname: 'insert[0][image]',
                 originalname: 'image.jpg',
                 mimetype: 'image/jpeg',
                 filename: 'image.jpg',
@@ -35,13 +35,12 @@ describe('pdfConverter', () => {
                 y: '0',
                 width: '100',
                 height: '100',
-                image: 'some/path/image.jpg'
             }];
 
 
-            return pdfConverter.editPDF(files,insertData).then((pdfFile) => {
+            return pdfConverter.editPDF(files, insertData).then((pdfFile) => {
                 pdfFile.should.not.be.null;
-              
+
             });
         });
     });
