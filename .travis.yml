@@ -46,9 +46,9 @@ deploy:
 
 # Production
 - provider: elasticbeanstalk
-  edge:
-     source: jasny/dpl
-     branch: master
+  #edge:
+  #   source: jasny/dpl
+  #   branch: master
   access_key_id: AKIAJQQQ7NJVV6B67VCA
   secret_access_key:
     secure: "iunPXTRLBD7n8kODqhx2BrGth5XZibjuw+JVub9k4giKc696CIG/yBlAM6pWBu20Ww0AqguLQfG3nFBr9FjBxRtYVASJ4hkheAswhpeUARN1R8hdDUB9sAlNojC3A1VRJNwOO9OBQMeWeUvRXtfMf1oZJ/0atF2HVQ3LC6n0wdJCFYi4V7Q6tU5gg5f6tTmu1LlUXCcOOvM6ZZ4DDOITsthMXjseS1ByPLJIIf5JCm5l5rR0xaM8LEBVvfh/kVzkB9ZF50AQJVnx5m9FuJBl3IP57N84B9DbWBCWPtmCu4Ehuk450RXJNGB2dMSNNGvqHMGrCZ7RBGgANq14BoZa8U6dJpU8Iy3lYhbJvCAz/Jw7KH5/C984oe8tWTOrjnBGc87EFSVtD7V3GQFRTSItqZD3V+SFPuXnzwhMa9RuvdaSurE6O0Mfb0Be7pETd5el7WrbsBmZzgxIT8Ojswg9f4opZWWhO7iu30tG+h2e3pwAbPoifO6NnSOODIBnFcUyxnA5d9qzQjUB+/R1VJ0OFg4USUEtMHPr8vUOQCsPZaKpbV9WCzLEWrgnlV73+nlaf7LywnwCoOGY8CS91TNZ1l3ciUOh0NgHCQ5zmXBC+okuY5DkjA8Zvpuckco1pEa2o6cRwqjrqaHOQEPfpslL3sC2n+vTKKJ+9KAfK345Rxo="
