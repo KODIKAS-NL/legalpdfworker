@@ -16,4 +16,4 @@ RUN npm install -g phantomjs@v1.9.20
 COPY . /usr/src/app
 
 EXPOSE 3000
-CMD [ "npm", "start" ]
+CMD [ "npm", "run" , "pm2" ]
