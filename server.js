@@ -8,8 +8,9 @@ const multiplefileUpload = require('./middleware/multipleFileUpload');
 
 const app = express();
 
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
 app.use(bodyParser.text({
-  type: 'text/html'
+  type: 'text/html', limit: '50mb'
 }));
 app.use('/convert',fileUpload);
 app.use('/embed', multiplefileUpload);
