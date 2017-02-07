@@ -3,6 +3,7 @@ const pdf = require('html-pdf');
 const Promise = require('bluebird');
 const uuid = require('uuid');
 const fileSystem = require('fs');
+const log = require('../lib/logger');
 const options = {
   border: {
     top: '2.5cm',
@@ -16,15 +17,12 @@ const convertHTML2PDF = (htmlPage) =>
   new Promise((resolve, reject) => {
     pdf.create(htmlPage, options).toFile(`./tmp/${uuid.v4()}.pdf`, (error, res) => {
       if (error) {
-        reject({
-          error
-        });
+        reject(error);
       } else {
         resolve(res);
       }
     });
   });
-
 
 exports.convert = (data, documentPath, res) => {
   convertHTML2PDF(data).then((output) => {
@@ -44,7 +42,8 @@ exports.convert = (data, documentPath, res) => {
         fileSystem.unlink(documentPath);
       }
     });
-  }, () => {
+  }, (err) => {
+    log.warn('Failed to convert document: ', err);
     res.status(415).end('Unable to convert the supplied document');
   });
 };
