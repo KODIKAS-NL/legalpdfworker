@@ -3,9 +3,10 @@ const express = require('express');
 const multer = require('multer');
 const uuid = require('uuid');
 const FileHelper = require('../lib/filehelper');
+const os = require('os');
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './tmp/');
+    cb(null, os.tmpdir());
   },
   filename: (req, file, cb) => {
     cb(null, uuid.v4());

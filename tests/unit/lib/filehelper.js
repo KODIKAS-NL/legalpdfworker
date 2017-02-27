@@ -1,28 +1,37 @@
 'use strict';
 const FileReader = require('../../../lib/filehelper');
 const should = require('should');
+const fs = require('fs-extra');
 
 describe('FileHelper', () =>{
 
   describe('readFile', () => {
 
+    beforeEach(()=> {
+      fs.copySync('./tests/files', './tests/testfiles/');
+    });
+
+    afterEach(() => {
+      fs.removeSync('./tests/testfiles/');
+    });
+
     it('should read an html file without processing', () => {
 
       const file = {
-        path: './tests/files/example.html',
+        path: './tests/testfiles/example.html',
         mimetype: 'text/html'
       };
 
       return FileReader.readFile(file).then((data) => {
         data.should.have.property('body').which.startWith('<!DOCTYPE html');
-        data.should.have.property('documentPath').which.is.equal('./tests/files/example.html');
+        data.should.have.property('type').which.is.equal('text/html');
       });
     });
 
     it('should read a png and convert it to bases64 ', () => {
 
       const file = {
-        path: './tests/files/example-image.png',
+        path: './tests/testfiles/example-image.png',
         mimetype: 'image/png'
       };
 
@@ -46,14 +55,14 @@ describe('FileHelper', () =>{
           </html>`;
 
         data.should.have.property('body').which.equal(html);
-        data.should.have.property('documentPath').which.is.equal('./tests/files/example-image.png');
+        data.should.have.property('type').which.is.equal('image/png');
       });
     });
 
     it('should read a svg and surround in with html ', () => {
 
       const file = {
-        path: './tests/files/example-image.svg',
+        path: './tests/testfiles/example-image.svg',
         mimetype: 'image/svg+xml'
       };
 
@@ -97,7 +106,7 @@ describe('FileHelper', () =>{
           </html>`;
 
         data.should.have.property('body').which.equal(html);
-        data.should.have.property('documentPath').which.is.equal('./tests/files/example-image.svg');
+        data.should.have.property('type').which.is.equal('image/svg+xml');
       });
     });
   });
