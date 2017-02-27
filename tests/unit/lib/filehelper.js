@@ -31,9 +31,13 @@ describe('FileHelper', () =>{
         const html =
           `<html>
             <style>
+              html, body, div, img {
+                border: 0;
+                margin: 0;
+                padding: 0;
+              }
               img {
-                max-width: 10.5in;
-                max-height: 8in;
+                max-width: 8in;
               }
             </style>
             <body>
@@ -58,9 +62,13 @@ describe('FileHelper', () =>{
         const html =
           `<html>
             <style>
+              html, body, div, img {
+                border: 0;
+                margin: 0;
+                padding: 0;
+              }
               img {
-                max-width: 10.5in;
-                max-height: 8in;
+                max-width: 8in;
               }
             </style>
             <body>
