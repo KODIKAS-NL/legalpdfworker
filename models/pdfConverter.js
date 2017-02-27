@@ -29,7 +29,7 @@ const convertHTML2PDF = (htmlPage, type) =>
   });
 
 exports.convert = (data, documentPath, type, res) => {
-  convertHTML2PDF(data).then((output) => {
+  convertHTML2PDF(data, type).then((output) => {
     res.writeHead(200, { // eslint-disable-line
       'Content-Type': 'application/pdf',
       'Access-Control-Allow-Origin': '*',
