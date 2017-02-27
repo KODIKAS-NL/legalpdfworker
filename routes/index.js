@@ -4,19 +4,23 @@ const express = require('express');
 const router = express.Router(); // eslint-disable-line
 const version = require('../package.json').version;
 const getEnv = require('../lib/get-env');
+const FileHelper = require('../lib/filehelper');
 
 router.post('/convert', (req, res) => {
   // checking if content-type is text/html if not sends error message
   const contentType = req.get('Content-Type');
-  if (contentType !== 'text/html' && contentType.indexOf('multipart/form-data')) {
+  if (!FileHelper.isSupportedFileType(contentType) && contentType.indexOf('multipart/form-data') === -1) {
     return res.status(415).end('Unable to convert the supplied document');
   }
 
   if (contentType === 'text/html') {
-    converter.convert(req.body, '', res);
+    converter.convert(req.body, '', contentType, res);
+  } else if (FileHelper.isImage(contentType)) {
+    const data = FileHelper.imageToHtml(req.body, contentType, null);
+    converter.convert(data.body, data.documentPath, data.type, res);
   } else {
-    req.fileUpload().then((data) => {
-      converter.convert(data.body, data.documentPath, res);
+    FileHelper.readFile(req.file).then((data) => {
+      converter.convert(data.body, data.documentPath, data.type, res);
     });
   }
 });

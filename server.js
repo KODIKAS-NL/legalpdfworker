@@ -9,9 +9,8 @@ const fileUpload = require('./middleware/fileUpload');
 const app = express();
 
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
-app.use(bodyParser.text({
-  type: 'text/html', limit: '50mb'
-}));
+app.use(bodyParser.text({ type: 'text/html', limit: '50mb'}));
+app.use(bodyParser.raw({ type: 'image/*', limit: '50mb'}));
 app.use('/convert', fileUpload);
 
 // Routes

@@ -1,10 +1,8 @@
 'use strict';
 const express = require('express');
-const fs = require('fs');
-const Promise = require('bluebird');
 const multer = require('multer');
-const log = require('../lib/logger');
 const uuid = require('uuid');
+const FileHelper = require('../lib/filehelper');
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, './tmp/');
@@ -21,23 +19,9 @@ const upload = multer({
 const router = express.Router(); // eslint-disable-line
 
 router.use(upload.single('file'), (req, res, next) => {
-  req.fileUpload = () => { // eslint-disable-line
-    return new Promise((resolve, reject) => {
-      fs.readFile(req.file.path, 'utf8', (err, data) => {
-        if (err) {
-          log.error('Read file err: ', err);
-          reject({
-            error: err
-          });
-        } else {
-          resolve({
-            body: data,
-            documentPath: req.file.path
-          });
-        }
-      });
-    });
-  };
+  if (req.file && !FileHelper.isSupportedFileType(req.file.mimetype)) {
+    return res.status(415).send('Unsupported file type');
+  }
 
   return next();
 });
