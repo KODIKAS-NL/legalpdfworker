@@ -4,17 +4,20 @@ const Promise = require('bluebird');
 const uuid = require('uuid');
 const fileSystem = require('fs');
 const log = require('../lib/logger');
+const FileHelper = require('../lib/filehelper');
 
-const convertHTML2PDF = (htmlPage) =>
+const convertHTML2PDF = (htmlPage, type) =>
   new Promise((resolve, reject) => {
-    const options = {
-      border: {
+    const options = {};
+
+    if (!FileHelper.isImage(type)) {
+      options.border = {
         top: '2.5cm',
         right: '2.5cm',
         bottom: '2.5cm',
         left: '2.5cm'
-      }
-    };
+      };
+    }
 
     pdf.create(htmlPage, options).toFile(`./tmp/${uuid.v4()}.pdf`, (error, res) => {
       if (error) {
@@ -25,7 +28,7 @@ const convertHTML2PDF = (htmlPage) =>
     });
   });
 
-exports.convert = (data, documentPath, res) => {
+exports.convert = (data, documentPath, type, res) => {
   convertHTML2PDF(data).then((output) => {
     res.writeHead(200, { // eslint-disable-line
       'Content-Type': 'application/pdf',

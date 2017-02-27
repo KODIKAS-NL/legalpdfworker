@@ -14,13 +14,13 @@ router.post('/convert', (req, res) => {
   }
 
   if (contentType === 'text/html') {
-    converter.convert(req.body, '', res);
+    converter.convert(req.body, '', contentType, res);
   } else if (FileHelper.isImage(contentType)) {
     const data = FileHelper.imageToHtml(req.body, contentType, null);
-    converter.convert(data.body, data.documentPath, res);
+    converter.convert(data.body, data.documentPath, data.type, res);
   } else {
     FileHelper.readFile(req.file).then((data) => {
-      converter.convert(data.body, data.documentPath, res);
+      converter.convert(data.body, data.documentPath, data.type, res);
     });
   }
 });
