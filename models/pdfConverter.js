@@ -17,6 +17,8 @@ const convertHTML2PDF = (htmlPage, type) =>
       };
     }
 
+    log.debug(`Creating pdf from html`);
+
     pdf.create(htmlPage, options).toStream((error, res) => {
       if (error) {
         reject(error);
@@ -28,11 +30,12 @@ const convertHTML2PDF = (htmlPage, type) =>
 
 exports.convert = (data, documentPath, type, res) => {
   convertHTML2PDF(data, type).then((stream) => {
-    res.writeHead(200, { // eslint-disable-line
-      'Content-Type': 'application/pdf',
-      'Access-Control-Allow-Origin': '*',
-      'Content-Disposition': 'attachment; filename="output.pdf"'
-    });
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Content-Disposition', 'attachment; filename="output.pdf"');
+
+    log.debug('Streaming pdf');
 
     stream.pipe(res);
   }).catch((err) => {
