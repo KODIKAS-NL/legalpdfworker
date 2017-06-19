@@ -1,4 +1,4 @@
 {
-  "loglevel": "warn",
+  "loglevel": "info",
   "rollbar": "436fd4b69ba640eca23af0997e350609"
 }

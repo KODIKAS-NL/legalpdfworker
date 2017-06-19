@@ -1,41 +1,45 @@
 'use strict';
-const pdf = require('html-pdf');
 const Promise = require('bluebird');
 const log = require('../lib/logger');
 const FileHelper = require('../lib/filehelper');
+const fs = require('fs');
 
-const convertHTML2PDF = (htmlPage, type) =>
+const convertHTML2PDF = (htmlPage, type, exporter) =>
   new Promise((resolve, reject) => {
-    const options = {};
+    const options = {
+      pageSize: 'A4',
+      printBackground: true,
+      marginsType: 1
+    };
 
     if (!FileHelper.isImage(type)) {
-      options.border = {
-        top: '2.5cm',
-        right: '2.5cm',
-        bottom: '2.5cm',
-        left: '2.5cm'
-      };
+      options.marginsType = 0;
     }
 
-    log.debug(`Creating pdf from html`);
-
-    pdf.create(htmlPage, options).toStream((error, res) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(res);
+    fs.writeFile('input.html', htmlPage, (err) => {
+      if (err) {
+        return reject(err);
       }
+
+      exporter.createJob('input.html', 'output.pdf', options, {}).then(job => {
+        job.on('job-complete', () => {
+          const rs = fs.createReadStream('output.pdf');
+          resolve(rs);
+        })
+        job.render();
+      }).catch((error) => {
+        reject(error);
+      });
     });
   });
 
-exports.convert = (data, documentPath, type, res) => {
-  convertHTML2PDF(data, type).then((stream) => {
-
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Disposition', 'attachment; filename="output.pdf"');
-
-    log.debug('Streaming pdf');
+exports.convert = (data, documentPath, type, exporter, res) => {
+  convertHTML2PDF(data, type, exporter).then((stream) => {
+    res.writeHead(200, { // eslint-disable-line
+      'Content-Type': 'application/pdf',
+      'Access-Control-Allow-Origin': '*',
+      'Content-Disposition': 'attachment; filename="output.pdf"'
+    });
 
     stream.pipe(res);
   }).catch((err) => {

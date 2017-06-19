@@ -13,14 +13,16 @@ router.post('/convert', (req, res) => {
     return res.status(415).end('Unable to convert the supplied document');
   }
 
+  const exporter = req.app.get('exporter');
+
   if (contentType === 'text/html') {
-    converter.convert(req.body, '', contentType, res);
+    converter.convert(req.body, '', contentType, exporter, res);
   } else if (FileHelper.isImage(contentType)) {
     const data = FileHelper.imageToHtml(req.body, contentType, null);
-    converter.convert(data.body, data.documentPath, data.type, res);
+    converter.convert(data.body, data.documentPath, data.type, exporter, res);
   } else {
     FileHelper.readFile(req.file).then((data) => {
-      converter.convert(data.body, data.documentPath, data.type, res);
+      converter.convert(data.body, data.documentPath, data.type, exporter, res);
     });
   }
 });
