@@ -3,6 +3,7 @@ const Promise = require('bluebird');
 const log = require('../lib/logger');
 const FileHelper = require('../lib/filehelper');
 const fs = require('fs');
+const hyperid = require('hyperid')({ urlSafe: true });
 
 const convertHTML2PDF = (htmlPage, type, exporter) =>
   new Promise((resolve, reject) => {
@@ -16,16 +17,31 @@ const convertHTML2PDF = (htmlPage, type, exporter) =>
       options.marginsType = 0;
     }
 
-    fs.writeFile('input.html', htmlPage, (err) => {
+    const inputFile = `${hyperid()}.html`;
+    const outputFile = `${hyperid()}.pdf`;
+
+    fs.writeFile(inputFile, htmlPage, (err) => {
       if (err) {
         return reject(err);
       }
 
-      exporter.createJob('input.html', 'output.pdf', options, {}).then(job => {
+      exporter.createJob(inputFile, outputFile, options, {}).then(job => {
         job.on('job-complete', () => {
-          const rs = fs.createReadStream('output.pdf');
-          resolve(rs);
-        })
+          fs.unlink(inputFile, (delErr) => {
+            if (delErr) {
+              log.warn('Failed to delete inputFile', inputFile);
+            }
+            log.debug(`Deleted input file: ${inputFile}`);
+            const rs = fs.createReadStream(outputFile);
+            resolve(rs);
+
+            rs.on('end', () => {
+              fs.unlink(outputFile, () => {
+                log.debug(`Deleted output file: ${outputFile}`);
+              });
+            });
+          });
+        });
         job.render();
       }).catch((error) => {
         reject(error);
