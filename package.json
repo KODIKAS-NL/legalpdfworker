@@ -1,6 +1,6 @@
 {
   "name": "nodehtml2pdf",
-  "version": "1.0.0",
+  "version": "1.0.18",
   "description": "Converts HTML documents to pdf",
   "main": "pdf.js",
   "dependencies": {
