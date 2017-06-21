@@ -8,7 +8,6 @@ describe('Tasks', () => {
 
   describe('POST /convert', () => {
     it('should return pdf document(sending html code in body)', function(done) {
-      this.skip();
       this.timeout(10000);
       setTimeout(() => {
         request(app)
@@ -34,7 +33,6 @@ describe('Tasks', () => {
 
   describe('POST /convert', () => {
     it('should return pdf document when sending an html file', function(done) {
-      this.skip();
       this.timeout(10000);
       request(app)
         .post('/convert')
@@ -58,7 +56,6 @@ describe('Tasks', () => {
 
   describe('POST /convert', () => {
     it('should return pdf document when sending png image', function(done) {
-      this.skip();
       this.timeout(10000);
       request(app)
         .post('/convert')
@@ -82,7 +79,6 @@ describe('Tasks', () => {
 
   describe('POST /convert', () => {
     it('should return pdf document when sending png image', function(done) {
-      this.skip();
       this.timeout(10000);
       const data = fs.readFileSync('./tests/files/example-image.png');
       request(app)
@@ -108,7 +104,6 @@ describe('Tasks', () => {
   describe('POST /convert', () => {
     it('should return pdf document when sending svg image', function(done) {
       this.timeout(10000);
-      this.skip();
       const data = fs.readFileSync('./tests/files/example-image.svg');
       request(app)
         .post('/convert')
@@ -132,7 +127,6 @@ describe('Tasks', () => {
 
   describe('GET /', () => {
     it('should return system info', function(done) {
-      this.skip();
       request(app)
         .get('/')
         .expect(200)
