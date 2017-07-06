@@ -5,6 +5,7 @@ const FileHelper = require('../lib/filehelper');
 const fs = require('fs');
 const hyperid = require('hyperid')({ urlSafe: true });
 const HTMLToPDF = require('html5-to-pdf');
+const path = require('path');
 
 const convertHTML2PDF = (htmlPage, type) =>
   new Promise((resolve, reject) => {
@@ -18,7 +19,8 @@ const convertHTML2PDF = (htmlPage, type) =>
       },
       inputPath: inputFile,
       outputPath: outputFile,
-      renderDelay: 1000
+      renderDelay: 1000,
+      templatePath: path.resolve('templates/html5bp')
     };
 
     if (!FileHelper.isImage(type)) {
