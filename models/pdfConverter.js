@@ -4,53 +4,59 @@ const log = require('../lib/logger');
 const FileHelper = require('../lib/filehelper');
 const fs = require('fs');
 const hyperid = require('hyperid')({ urlSafe: true });
+const HTMLToPDF = require('html5-to-pdf');
+const path = require('path');
 
-const convertHTML2PDF = (htmlPage, type, exporter) =>
+const convertHTML2PDF = (htmlPage, type) =>
   new Promise((resolve, reject) => {
+    const inputFile = `${hyperid()}.html`;
+    const outputFile = `${hyperid()}.pdf`;
     const options = {
-      pageSize: 'A4',
-      printBackground: true,
-      marginsType: 1
+      options: {
+        pageSize: 'A4',
+        printBackground: true,
+        marginsType: 1
+      },
+      inputPath: inputFile,
+      outputPath: outputFile,
+      renderDelay: 1000,
+      templatePath: path.resolve('templates/html5bp')
     };
 
     if (!FileHelper.isImage(type)) {
-      options.marginsType = 0;
+      options.options.marginsType = 0;
     }
-
-    const inputFile = `${hyperid()}.html`;
-    const outputFile = `${hyperid()}.pdf`;
 
     fs.writeFile(inputFile, htmlPage, (err) => {
       if (err) {
         return reject(err);
       }
 
-      exporter.createJob(inputFile, outputFile, options, {}).then(job => {
-        job.on('job-complete', () => {
-          fs.unlink(inputFile, (delErr) => {
-            if (delErr) {
-              log.warn('Failed to delete inputFile', inputFile);
-            }
-            log.debug(`Deleted input file: ${inputFile}`);
-            const rs = fs.createReadStream(outputFile);
-            resolve(rs);
+      const htmlToPDF = new HTMLToPDF(options);
+      htmlToPDF.build((buildErr) => {
+        if (buildErr) {
+          return reject(err);
+        }
+        fs.unlink(inputFile, (delErr) => {
+          if (delErr) {
+            log.warn('Failed to delete inputFile', inputFile);
+          }
+          log.debug(`Deleted input file: ${inputFile}`);
+          const rs = fs.createReadStream(outputFile);
+          resolve(rs);
 
-            rs.on('end', () => {
-              fs.unlink(outputFile, () => {
-                log.debug(`Deleted output file: ${outputFile}`);
-              });
+          rs.on('end', () => {
+            fs.unlink(outputFile, () => {
+              log.debug(`Deleted output file: ${outputFile}`);
             });
           });
         });
-        job.render();
-      }).catch((error) => {
-        reject(error);
       });
     });
   });
 
-exports.convert = (data, documentPath, type, exporter, res) => {
-  convertHTML2PDF(data, type, exporter).then((stream) => {
+exports.convert = (data, documentPath, type, res) => {
+  convertHTML2PDF(data, type).then((stream) => {
     res.writeHead(200, { // eslint-disable-line
       'Content-Type': 'application/pdf',
       'Access-Control-Allow-Origin': '*',

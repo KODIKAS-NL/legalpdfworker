@@ -7,8 +7,8 @@
     "bluebird": "^3.4.1",
     "body-parser": "^1.17.2",
     "config": "^1.21.0",
-    "electron-pdf": "^1.3.0",
     "express": "^4.13.4",
+    "html5-to-pdf": "^2.2.4",
     "hyperid": "^1.2.0",
     "multer": "^1.1.0",
     "pm2": "^1.1.3",
@@ -17,7 +17,6 @@
     "winston-rollbar": "^0.2.0"
   },
   "devDependencies": {
-    "electron-mocha": "^4.0.0",
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^4.0.0",
     "eslint-plugin-react": "^3.16.1",
@@ -27,7 +26,7 @@
     "supertest": "^1.2.0"
   },
   "scripts": {
-    "test": "electron-mocha --ui bdd --recursive tests/",
+    "test": "mocha --ui bdd --recursive tests/",
     "lint": "eslint . --ext .js",
     "pm2": "pm2 start server.js --no-daemon",
     "start": "electron server.js"
