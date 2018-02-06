@@ -19,8 +19,9 @@ WORKDIR /usr/src/app
 COPY . /usr/src/app
 RUN npm install
 
+RUN npm i pm2 -g
+
 EXPOSE 3000
 
 ENTRYPOINT ["./entrypoint.sh"]
-#CMD [ "npm", "start" ]
-CMD [ "npm", "run" , "pm2" ]
+CMD ["pm2-runtime", "server.js"]
