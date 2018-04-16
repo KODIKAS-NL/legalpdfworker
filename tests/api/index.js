@@ -4,11 +4,13 @@ const request = require('supertest');
 const fs = require('fs');
 const should = require('should');
 
+const TIMEOUT = 20000;
+
 describe('Tasks', () => {
 
   describe('POST /convert', () => {
     it('should return pdf document(sending html code in body)', function(done) {
-      this.timeout(10000);
+      this.timeout(TIMEOUT);
       setTimeout(() => {
         request(app)
           .post('/convert')
@@ -33,7 +35,7 @@ describe('Tasks', () => {
 
   describe('POST /convert', () => {
     it('should return pdf document when sending an html file', function(done) {
-      this.timeout(10000);
+      this.timeout(TIMEOUT);
       request(app)
         .post('/convert')
         .set({
@@ -56,7 +58,7 @@ describe('Tasks', () => {
 
   describe('POST /convert', () => {
     it('should return pdf document when sending png image', function(done) {
-      this.timeout(10000);
+      this.timeout(TIMEOUT);
       request(app)
         .post('/convert')
         .set({
@@ -79,7 +81,7 @@ describe('Tasks', () => {
 
   describe('POST /convert', () => {
     it('should return pdf document when sending png image', function(done) {
-      this.timeout(10000);
+      this.timeout(TIMEOUT);
       const data = fs.readFileSync('./tests/files/example-image.png');
       request(app)
         .post('/convert')
@@ -103,7 +105,7 @@ describe('Tasks', () => {
 
   describe('POST /convert', () => {
     it('should return pdf document when sending svg image', function(done) {
-      this.timeout(10000);
+      this.timeout(TIMEOUT);
       const data = fs.readFileSync('./tests/files/example-image.svg');
       request(app)
         .post('/convert')
