@@ -31,6 +31,28 @@ describe('Tasks', () => {
       }, 5000)
 
     });
+
+    it('should return pdf document(sending html code in body with u2028 character)', function(done) {
+      this.timeout(TIMEOUT);
+      setTimeout(() => {
+        request(app)
+          .post('/convert')
+          .set({
+            'Content-Type': 'text/html'
+          })
+          .send('<p>This bit of HTML will be transformed into a \u2028<b>docx or pdf</b> file</p>')
+          .expect(200)
+          .end((err, res) => {
+
+            if (err) {
+              console.log(err);
+            }
+            res.should.be.not.null;
+            res.header['content-disposition'].should.match(/.*\.pdf/)
+            done();
+          });
+      }, 5000)
+    });
   });
 
   describe('POST /convert', () => {
