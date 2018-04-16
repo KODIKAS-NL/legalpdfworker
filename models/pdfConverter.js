@@ -27,7 +27,9 @@ const convertHTML2PDF = (htmlPage, type) =>
       options.options.marginsType = 0;
     }
 
-    fs.writeFile(inputFile, htmlPage, (err) => {
+    const newHtmlPage = htmlPage.replace(/[\u2028\u2029]/g, '');
+
+    fs.writeFile(inputFile, newHtmlPage, (err) => {
       if (err) {
         return reject(err);
       }
