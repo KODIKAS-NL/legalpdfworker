@@ -17,7 +17,10 @@ const convertHTML2PDF = (htmlPage, type) =>
         printBackground: true
       },
       launchOptions: {
-        args: ['--site-per-process']
+        args: [
+          '--no-sandbox',
+          '--site-per-process'
+        ]
       },
       inputPath: inputFile,
       outputPath: outputFile,
