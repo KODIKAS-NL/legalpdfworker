@@ -6,7 +6,7 @@ Converts HTML documents to pdf
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/) >= 5.0.0
+- [Node.js](https://nodejs.org/) >= 10.0.0
 - [Git](http://git-scm.com)
 
 
