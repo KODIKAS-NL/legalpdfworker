@@ -32,9 +32,6 @@ before_deploy:
 deploy:
 # Staging
 - provider: elasticbeanstalk
-  edge:
-     source: jasny/dpl
-     branch: master
   access_key_id: AKIAIWFAXQWNDAHESRAA
   secret_access_key:
     secure: "OfFCP13hnm8beIkd5IvctNvGc1tg+50knjvvbO7vhTydfOu0y1W8n+JrwBaohtWHo/DYILNBj6/1hELjbAI6HGot/wvNEfPisR3ygB/MeC02MKde4/xmxKvoHzcfe8jZnk6Ejzm6BGNhWY0XbThsCiR8JzBqrq83f7J8JUakU6dAAeppWcpXXJWqJoZ6LJBIOOQwsNhC4R8hdQttGWO/nypTb4D7mRDiwdEhWHyDQxo/PnWi1Wo7NT5Oy2pj+0V51taOFD/q7nXnLC8pnmI1RvFvROXngfXQiifSlqHOU7NeFGK2iWdLVcLD/MbbsrXfQBlx/YPZ7aiQjql/wymSNx+naLfIElzmH8jrXhovt8a6zDprl5dE2WzbldoVNDlOYFyFTVS97SPVMk9pudDj1MpsuF8UOMr11amb+/JkfCPp9mbUFbn54jiZqZVBPIzgHKEQO7JRqyghz7yHUKQwKsp4MhXuEy8nxYMwCQz9UUBcb+Jlk9dze2RWvXaU1XNnZPOyEWY7043kfKZ4CJtmw6AVOCInvv2LaqUXdrCRDYH+8qeVFCd9QBC5xMxz340UdxFqxcu7Bqt1uVOcOaq/rlDm9KQmU8e67DsBYpxh4sv0h4q+PxDW/5m2voHgD6horDM+hexJnw+jMr4xYbpmzwhxQv0nvCnqCf5KWzhPmUY="
@@ -48,9 +45,6 @@ deploy:
 
 # Production
 - provider: elasticbeanstalk
-  edge:
-     source: legalthings/dpl
-     branch: master
   access_key_id: AKIAJQQQ7NJVV6B67VCA
   secret_access_key:
     secure: "iunPXTRLBD7n8kODqhx2BrGth5XZibjuw+JVub9k4giKc696CIG/yBlAM6pWBu20Ww0AqguLQfG3nFBr9FjBxRtYVASJ4hkheAswhpeUARN1R8hdDUB9sAlNojC3A1VRJNwOO9OBQMeWeUvRXtfMf1oZJ/0atF2HVQ3LC6n0wdJCFYi4V7Q6tU5gg5f6tTmu1LlUXCcOOvM6ZZ4DDOITsthMXjseS1ByPLJIIf5JCm5l5rR0xaM8LEBVvfh/kVzkB9ZF50AQJVnx5m9FuJBl3IP57N84B9DbWBCWPtmCu4Ehuk450RXJNGB2dMSNNGvqHMGrCZ7RBGgANq14BoZa8U6dJpU8Iy3lYhbJvCAz/Jw7KH5/C984oe8tWTOrjnBGc87EFSVtD7V3GQFRTSItqZD3V+SFPuXnzwhMa9RuvdaSurE6O0Mfb0Be7pETd5el7WrbsBmZzgxIT8Ojswg9f4opZWWhO7iu30tG+h2e3pwAbPoifO6NnSOODIBnFcUyxnA5d9qzQjUB+/R1VJ0OFg4USUEtMHPr8vUOQCsPZaKpbV9WCzLEWrgnlV73+nlaf7LywnwCoOGY8CS91TNZ1l3ciUOh0NgHCQ5zmXBC+okuY5DkjA8Zvpuckco1pEa2o6cRwqjrqaHOQEPfpslL3sC2n+vTKKJ+9KAfK345Rxo="
