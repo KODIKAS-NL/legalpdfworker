@@ -12,10 +12,12 @@ const convertHTML2PDF = (htmlPage, type) =>
     const inputFile = `${hyperid()}.html`;
     const outputFile = `${hyperid()}.pdf`;
     const options = {
-      options: {
-        pageSize: 'A4',
-        printBackground: true,
-        marginsType: 1
+      pdf: {
+        format: 'A4',
+        printBackground: true
+      },
+      launchOptions: {
+        args: ['--site-per-process']
       },
       inputPath: inputFile,
       outputPath: outputFile,
@@ -24,7 +26,12 @@ const convertHTML2PDF = (htmlPage, type) =>
     };
 
     if (!FileHelper.isImage(type)) {
-      options.options.marginsType = 0;
+      options.pdf.margin = {
+        top: 100,
+        right: 100,
+        bottom: 100,
+        left: 100
+      };
     }
 
     const newHtmlPage = htmlPage.replace(/[\u2028\u2029]/g, '');
@@ -35,25 +42,26 @@ const convertHTML2PDF = (htmlPage, type) =>
       }
 
       const htmlToPDF = new HTMLToPDF(options);
-      htmlToPDF.build((buildErr) => {
-        if (buildErr) {
-          return reject(err);
-        }
-        fs.unlink(inputFile, (delErr) => {
-          if (delErr) {
-            log.warn('Failed to delete inputFile', inputFile);
-          }
-          log.debug(`Deleted input file: ${inputFile}`);
-          const rs = fs.createReadStream(outputFile);
-          resolve(rs);
+      htmlToPDF.start()
+        .then(() => htmlToPDF.build())
+        .then(() => {
+          fs.unlink(inputFile, (delErr) => {
+            if (delErr) {
+              log.warn('Failed to delete inputFile', inputFile);
+            }
+            log.debug(`Deleted input file: ${inputFile}`);
+            const rs = fs.createReadStream(outputFile);
+            resolve(rs);
 
-          rs.on('end', () => {
-            fs.unlink(outputFile, () => {
-              log.debug(`Deleted output file: ${outputFile}`);
+            rs.on('end', () => {
+              fs.unlink(outputFile, () => {
+                log.debug(`Deleted output file: ${outputFile}`);
+              });
             });
           });
-        });
-      });
+        })
+        .then(() => htmlToPDF.close())
+        .catch(buildErr => reject(buildErr));
     });
   });
 
