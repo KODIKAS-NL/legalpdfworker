@@ -1,0 +1,13 @@
+{
+  "Ports": [
+    {
+      "ContainerPort": "3000"
+    }
+  ],
+  "Volumes": [
+    {
+      "HostDirectory": "/tmp",
+      "ContainerDirectory": "/tmp"
+    }
+  ]
+}
