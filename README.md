@@ -1,7 +1,10 @@
 Legal Things - LegalPdfWorker [![Build Status](https://travis-ci.com/legalthings/legalpdfworker.svg?token=o6zPWLgswk8zQVpsus4p&branch=master)](https://magnum.travis-ci.com/legalthings/legalpdfworker)
 ==================
 
-Converts HTML documents to pdf
+Converts:
+ - HTML documents to pdf
+ - Data + template to HTML
+ - Data + template to pdf
 
 
 ## Requirements
