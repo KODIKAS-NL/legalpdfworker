@@ -1,6 +1,5 @@
 'use strict';
 
-const bodyParser = require('body-parser');
 const express = require('express');
 const log = require('./lib/logger');
 const routes = require('./routes');
@@ -9,9 +8,10 @@ const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
-app.use(bodyParser.text({ type: 'text/html', limit: '50mb' }));
-app.use(bodyParser.raw({ type: 'image/*', limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: false }));
+app.use(express.text({ type: 'text/html', limit: '50mb' }));
+app.use(express.raw({ type: 'image/*', limit: '50mb' }));
+app.use(express.json({ type: 'application/json', limit: '50mb' }));
 app.use('/convert', fileUpload);
 app.use(errorHandler);
 
