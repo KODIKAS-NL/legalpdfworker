@@ -24,6 +24,7 @@ router.post('/', async function (req, res) {
     p[c.key] = c.text
     return p
   }, {})
+  const font = req.body.font
 
   if (typeof body == 'undefined' || body == null) {
     logger.warn('Received empty body: ', JSON.stringify(body), ' for data: ', JSON.stringify(data));
@@ -35,7 +36,7 @@ router.post('/', async function (req, res) {
 
   try {
     if (req.get('Accept') && req.get('Accept').indexOf('application/pdf') > -1) {
-      const result = await Converter.templateToPDF({ body, data, computed, partials })
+      const result = await Converter.templateToPDF({ body, data, computed, partials, font })
       res.writeHead(200, { // eslint-disable-line
         'Content-Type': 'application/pdf',
         'Access-Control-Allow-Origin': '*',

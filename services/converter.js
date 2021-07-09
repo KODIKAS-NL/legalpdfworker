@@ -63,13 +63,13 @@ class Converter {
         return htmlToPDF
     }
 
-    preProcessesParams({ body, data, computed, partials }) {
+    preProcessesParams({ body, data, computed, partials, font }) {
         if (typeof data == 'string') answers = JSON.parse(data);
         this.parseDates(data);
         const tidyContent = this.decodeMustacheExpressions(mustacheTidy(body));
         const cleanContent = this.cleanTemplate(tidyContent);
 
-        return { body: cleanContent, data, computed, partials }
+        return { body: cleanContent, data, computed, partials, font }
     }
 
     parseDates(answers) {
@@ -158,7 +158,7 @@ class Converter {
         page.on('console', message => {
             let type = message.type()
             type = type == "warning" ? "warn" : type
-            if(['endGroup','startGroupCollapsed'].indexOf(type) > -1)
+            if (['endGroup', 'startGroupCollapsed'].indexOf(type) > -1)
                 return;
 
             if (logger[type] !== undefined)
@@ -168,12 +168,11 @@ class Converter {
         })
             .on('pageerror',
                 ({ message }) => logger.error(message))
-            .on('response', response =>
-                logger.info(`${response.status()} ${response.url()}`))
             .on('requestfailed', request =>
                 logger.error(`${request.failure().errorText} ${request.url()}`))
     }
 }
+
 const converter = new Converter();
 module.exports = new (class {
     async templateToHTML({ body, data, computed, partials }) {
@@ -181,7 +180,7 @@ module.exports = new (class {
         var htmlToPdf = null
         try {
             htmlToPdf = await converter.startHtmlToPdf(
-                '<!doctype html><html><body></body></html>',
+                "<!doctype html><html><body></body></html>",
                 html5_template_path,
                 [ractive_path, jquery_path, moment_path, spellit_path, functions_path, extend_native_path]
             )
@@ -194,12 +193,20 @@ module.exports = new (class {
             if (htmlToPdf) htmlToPdf.close()
         }
     }
-    async templateToPDF({ body, data, computed, partials }) {
-        var { body, data, computed, partials } = converter.preProcessesParams({ body, data, computed, partials })
+    async templateToPDF({ body, data, computed, partials, font }) {
+        var { body, data, computed, partials, font } = converter.preProcessesParams({ body, data, computed, partials, font })
+        const fontlink = font ? `<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=${encodeURIComponent(font)}:400,700">` : ""
         var htmlToPdf = null
         try {
             htmlToPdf = await converter.startHtmlToPdf(
-                '<!doctype html><html><body></body></html>',
+                `<!doctype html>
+                <html>
+                    <head>
+                        ${fontlink}
+                        <link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/legalthings-cdn/bootstrap-html-pdf/css/bootstrap.min.css">
+                    </head>
+                    <body></body>
+                </html>`,
                 html5_template_path,
                 [ractive_path, jquery_path, moment_path, spellit_path, functions_path, extend_native_path]
             )
