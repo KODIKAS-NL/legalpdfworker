@@ -16,6 +16,9 @@ RUN rm -rf /usr/share/fonts/truetype/dejavu/
 COPY fonts /root/.fonts
 RUN fc-cache -fv
 
+RUN npm i pm2 -g
+RUN npm i nodemon -g
+
 # Create app directory
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
@@ -23,10 +26,11 @@ WORKDIR /usr/src/app
 RUN npm config set unsafe-perm true
 
 # Install app dependencies
-COPY . /usr/src/app
+COPY package*.json /usr/src/app
 RUN npm install
 
-RUN npm i pm2 -g
+# Copy source
+COPY . /usr/src/app
 
 EXPOSE 3000
 
