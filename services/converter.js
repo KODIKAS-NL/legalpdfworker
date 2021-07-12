@@ -64,7 +64,7 @@ class Converter {
     }
 
     preProcessesParams({ body, data, computed, partials, font }) {
-        if (typeof data == 'string') answers = JSON.parse(data);
+        if (typeof data == 'string') data = JSON.parse(data);
         this.parseDates(data);
         const tidyContent = this.decodeMustacheExpressions(mustacheTidy(body));
         const cleanContent = this.cleanTemplate(tidyContent);
