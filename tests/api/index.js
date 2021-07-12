@@ -185,7 +185,8 @@ describe('Tasks', () => {
               "last_name": "Doe",
               "date_of_birth": "01-01-1970"
             }
-          }
+          },
+          "font":"Open Sans" //font to be used in pdf
         })
         .expect(200)
         .end((err, res) => {
