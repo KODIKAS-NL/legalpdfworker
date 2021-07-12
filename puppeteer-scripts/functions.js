@@ -35,7 +35,7 @@ removeEmptyListItems = function(jqueryNode) {
 }
 
 preservePagebreaks = function(jqueryNode) {
-    jqueryNode.find('[style*=page-break]').each(function () {
+    jqueryNode.find('[style*=break-]').each(function () {
         var $pageBreak = $(this);
         var $span = $pageBreak.find('span');
         $span.html('&nbsp;');

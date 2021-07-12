@@ -318,9 +318,9 @@ describe('Tasks', () => {
         .expect('Content-Type', /html/)
         .expect([
           '<foo></foo>', // note that <foo> is cleaned but page breaks are not
-          '<div style="break-after: page;"><span style="display:none;">&nbsp;</span></div>',
-          '<div style="break-before: page;"><span style="display:none;">&nbsp;</span></div>',
-          '<div><span style="display:none;">&nbsp;</span></div>'
+          '<div style="break-after: page;"><span style="display: none;">&nbsp;</span></div>',
+          '<div style="break-before: page;"><span style="display: none;">&nbsp;</span></div>',
+          '<div><span style="display: none;"></span></div>' // 'page-break-inside: always' is not a valid page break
         ].join(''), done);
     });
   });
