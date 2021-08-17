@@ -225,7 +225,7 @@ module.exports = new (class {
         const isImage = FileHelper.isImage(type)
         var htmlToPdf = null
         try {
-            const htmlToPdf = await converter.startHtmlToPdf(
+            htmlToPdf = await converter.startHtmlToPdf(
                 body,
                 html5_template_path,
                 [],
